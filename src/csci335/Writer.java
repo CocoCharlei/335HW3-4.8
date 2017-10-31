@@ -1,5 +1,6 @@
 package csci335;
 
-public class Writer {
+public class Writer extends Thread {
+	private String writeThread;
 
 }
