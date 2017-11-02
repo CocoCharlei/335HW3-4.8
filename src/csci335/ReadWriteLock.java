@@ -7,28 +7,39 @@ public class ReadWriteLock {
 	private int index_in = 0;
 	private int index_out = 0;
 	
-	public synchronized void producer(Object o) throws InterruptedException{
+	public synchronized void writer(Object o) throws InterruptedException{
 		
 		while (readHold > 0 || writeHold > 0){
 			wait(); //waits when object in use
 		}
 		writeHold++; //inc writers hold
-		//run
+		System.out.println("writer is holding");
+		//stores object at index in array
+		array[index_in] = o;
+		//change index_in to next index
+		index_in = (++index_in)% array.length;
 		writeHold--;
+		System.out.println("writer no longer holding");
 		notifyAll(); //wake up when available to use
 	}
 	
-	public synchronized Object consumer() throws InterruptedException{
+	public synchronized Object reader() throws InterruptedException{
 		
 		while (writeHold > 0){
 			wait(); //waits when writer using
 		}
 		readHold++; 
-		//run
+		System.out.println("reader is holding");
+		//return object in array at index
+		Object output = array[index_out];
+		//increment index to be read
+		index_out = (++index_out) % array.length;
 		readHold--;
-		while (readHold == 0){
+		System.out.println("reader release");
+		if (readHold == 0){
 			notifyAll(); //allow to use when no writer using
 		}
-		return array[readHold+writeHold]; //returns object in array at index of however many threads hold it
+		//returns value read
+		return output;
 	}
 }
