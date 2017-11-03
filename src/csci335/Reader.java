@@ -15,10 +15,11 @@ public class Reader extends Thread{
 	public void run(){
 		try {
 			//calls lock with value 3
-			lock.reader();
+			for (int i = 0; i <= 10; i++) {
+				lock.reader();
+			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 	}
 	
