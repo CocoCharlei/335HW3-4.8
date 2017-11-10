@@ -21,7 +21,7 @@ public class FileEditor {
 			FileInputStream fileReader = new FileInputStream(fileName);
 			//sets info read from file to num
 			int num = fileReader.read();
-			//TODO make threadName variable to identify threads
+			fileReader.close();
 			System.out.println("Reader " + threadName + " read " + num + " from file");
 			lock.readUnlock(threadName);
 		} catch (Exception e) {
@@ -36,6 +36,7 @@ public class FileEditor {
 			Random rand = new Random();
 			int num = rand.nextInt(10);
 			fileWriter.write(num);
+			fileWriter.close();
 			System.out.println("Writer " + threadName + " wrote " + num + " on file");
 			lock.writeUnlock(threadName);
 		} catch (Exception e) {
