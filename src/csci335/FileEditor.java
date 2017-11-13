@@ -1,28 +1,28 @@
 package csci335;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Random;
 
 public class FileEditor {
-
-	private String fileName;
+	
+	private int[] array;
+	private int index_in;
+	private int index_out;
 	
 	private ReadWriteLock lock = new ReadWriteLock();
 	
-	public FileEditor (String fileName){
-		//set file name to input
-		this.fileName = fileName;
+	public FileEditor (int arraySize){
+		array = new int[arraySize];
+		index_in = 0;
+		index_out = 0;
 	}
 	public void readFile(String threadName){
 		try {
 			//reader holds the file
 			lock.readLock(threadName);
-			FileInputStream fileReader = new FileInputStream(fileName);
-			//sets info read from file to num
-			int num = fileReader.read();
-			fileReader.close();
-			System.out.println("Reader " + threadName + " read " + num + " from file");
+			int num = array[index_out];
+			System.out.println("Reader " + threadName + " read " + num + 
+					" from array index " + index_out);
+			index_out = (++index_out % array.length);
 			lock.readUnlock(threadName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,12 +32,12 @@ public class FileEditor {
 		try {
 			//reader holds the file
 			lock.writeLock(threadName);
-			FileOutputStream fileWriter = new FileOutputStream(fileName);
 			Random rand = new Random();
 			int num = rand.nextInt(10);
-			fileWriter.write(num);
-			fileWriter.close();
-			System.out.println("Writer " + threadName + " wrote " + num + " on file");
+			array[index_in] = num;
+			System.out.println("Writer " + threadName + " wrote " + num + 
+					" in array index " + index_in);
+			index_in = (++index_in) % array.length;
 			lock.writeUnlock(threadName);
 		} catch (Exception e) {
 			e.printStackTrace();

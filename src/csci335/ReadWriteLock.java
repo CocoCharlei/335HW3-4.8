@@ -23,11 +23,11 @@ public class ReadWriteLock {
 			while (writeHold > 0) {
 				System.out.println("reader " + threadName + " tries to acquire lock, cannot, waits");
 				wait(); // waits when writer using
-				while (numbers <= 0){
-					System.out.println("file is empty so reader " + threadName + " waits");
-					wait();
-				}
 			}
+//			while (numbers <= 0){
+//				System.out.println("file is empty so reader " + threadName + " waits");
+//				wait();
+//			}
 			readHold++;
 			System.out.println("reader " + threadName + " is reading");
 
