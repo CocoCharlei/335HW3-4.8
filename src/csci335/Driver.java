@@ -2,10 +2,8 @@ package csci335;
 
 public class Driver {
 
-	public static void main(String[] args) {
-		FileEditor fe = new FileEditor("File.txt");
-		//Do we need this?
-		//ReadWriteLock lock = new ReadWriteLock();
+	public static void main(String[] args) throws InterruptedException{
+		FileEditor fe = new FileEditor(10);
 		Writer write = new Writer("W0", fe);
 		Reader read = new Reader("R0", fe);
 		Reader read1 = new Reader("R1", fe);
@@ -27,12 +25,6 @@ public class Driver {
 		read4.start();
 		write3.start();
 		read5.start();
-		
-//		write.join();
-//		read.join();
-//		read1.run();
-//		read2.run();
-//		write1.run();
 		
 	}
 
